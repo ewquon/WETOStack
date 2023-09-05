@@ -406,10 +406,22 @@ to construct their inputs. These are connected through workflows rather than cod
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 
 <span class="n">models</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;amr-wind&quot;</span><span class="p">,</span>
     <span class="s2">&quot;anba4&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;erf&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;fastfarm&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;flasc&quot;</span><span class="p">,</span>
     <span class="s2">&quot;floris&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;hercules&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;hopp&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;moa_python&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;moorpy&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;nalu-wind&quot;</span><span class="p">,</span>
     <span class="s2">&quot;openfast&quot;</span><span class="p">,</span>
     <span class="s2">&quot;openoa&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;openturbine&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;pynumad&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;raft&quot;</span><span class="p">,</span>
     <span class="s2">&quot;rosco&quot;</span><span class="p">,</span>
     <span class="s2">&quot;sonata&quot;</span><span class="p">,</span>
     <span class="s2">&quot;weis&quot;</span><span class="p">,</span>
@@ -417,19 +429,11 @@ to construct their inputs. These are connected through workflows rather than cod
     <span class="s2">&quot;wisdem&quot;</span><span class="p">,</span>
     <span class="s2">&quot;wombat&quot;</span><span class="p">,</span>
 <span class="p">]</span>
-<span class="n">model_connectivity</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">models</span><span class="p">:</span>
-    <span class="n">attributes</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span> <span class="nb">open</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;..&quot;</span><span class="p">,</span> <span class="s2">&quot;..&quot;</span><span class="p">,</span> <span class="s2">&quot;software_attributes&quot;</span><span class="p">,</span> <span class="s2">&quot;database&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">model</span><span class="si">}</span><span class="s2">.yaml&quot;</span><span class="p">),</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="p">)</span>
-    <span class="c1"># print(model)</span>
-    <span class="k">if</span> <span class="s2">&quot;dependencies&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">:</span>
-        <span class="k">continue</span>
-    <span class="n">model_connectivity</span><span class="p">[</span><span class="n">model</span><span class="p">]</span> <span class="o">=</span> <span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;dependencies&quot;</span><span class="p">]</span>
 
-<span class="n">network_graph</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span>
-<span class="k">for</span> <span class="n">model</span><span class="p">,</span> <span class="n">connections</span> <span class="ow">in</span> <span class="n">model_connectivity</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">connections</span><span class="p">:</span>
-        <span class="n">weight</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;direct&quot;</span> <span class="k">else</span> <span class="mi">2</span>
-        <span class="n">network_graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">weight</span><span class="o">=</span><span class="n">weight</span><span class="p">)</span>
+<span class="n">model_attributes_map</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">model</span><span class="p">:</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span> <span class="nb">open</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;..&quot;</span><span class="p">,</span> <span class="s2">&quot;..&quot;</span><span class="p">,</span> <span class="s2">&quot;software_attributes&quot;</span><span class="p">,</span> <span class="s2">&quot;database&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">model</span><span class="si">}</span><span class="s2">.yaml&quot;</span><span class="p">),</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="p">)</span>
+    <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">models</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 </div>
@@ -441,18 +445,39 @@ to construct their inputs. These are connected through workflows rather than cod
 <span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="kn">import</span> <span class="nn">yaml</span>
 <span class="ne">----&gt; </span><span class="mi">3</span> <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 <span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="n">models</span> <span class="o">=</span> <span class="p">[</span>
-<span class="g g-Whitespace">      </span><span class="mi">6</span>     <span class="s2">&quot;anba4&quot;</span><span class="p">,</span>
-<span class="g g-Whitespace">      </span><span class="mi">7</span>     <span class="s2">&quot;floris&quot;</span><span class="p">,</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span>     <span class="s2">&quot;amr-wind&quot;</span><span class="p">,</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span>     <span class="s2">&quot;anba4&quot;</span><span class="p">,</span>
    <span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">15</span>     <span class="s2">&quot;wombat&quot;</span><span class="p">,</span>
-<span class="g g-Whitespace">     </span><span class="mi">16</span> <span class="p">]</span>
-<span class="g g-Whitespace">     </span><span class="mi">17</span> <span class="n">model_connectivity</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="g g-Whitespace">     </span><span class="mi">27</span>     <span class="s2">&quot;wombat&quot;</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">28</span> <span class="p">]</span>
+<span class="g g-Whitespace">     </span><span class="mi">30</span> <span class="n">model_attributes_map</span> <span class="o">=</span> <span class="p">{</span>
+<span class="g g-Whitespace">     </span><span class="mi">31</span>     <span class="n">model</span><span class="p">:</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span> <span class="nb">open</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;..&quot;</span><span class="p">,</span> <span class="s2">&quot;..&quot;</span><span class="p">,</span> <span class="s2">&quot;software_attributes&quot;</span><span class="p">,</span> <span class="s2">&quot;database&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">model</span><span class="si">}</span><span class="s2">.yaml&quot;</span><span class="p">),</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">32</span>     <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">models</span>
+<span class="g g-Whitespace">     </span><span class="mi">33</span> <span class="p">}</span>
 
 <span class="ne">ModuleNotFoundError</span>: No module named &#39;networkx&#39;
 </pre></div>
 </div>
 </div>
 </details>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_connectivity</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">models</span><span class="p">:</span>
+    <span class="n">model_attributes</span> <span class="o">=</span> <span class="n">model_attributes_map</span><span class="p">[</span><span class="n">model</span><span class="p">]</span>
+    <span class="k">if</span> <span class="s2">&quot;dependencies&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">model_attributes</span><span class="p">:</span>
+        <span class="k">continue</span>
+    <span class="n">model_connectivity</span><span class="p">[</span><span class="n">model</span><span class="p">]</span> <span class="o">=</span> <span class="n">model_attributes</span><span class="p">[</span><span class="s2">&quot;dependencies&quot;</span><span class="p">]</span>
+
+<span class="n">network_graph</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">model</span><span class="p">,</span> <span class="n">connections</span> <span class="ow">in</span> <span class="n">model_connectivity</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">connections</span><span class="p">:</span>
+        <span class="n">weight</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;direct&quot;</span> <span class="k">else</span> <span class="mi">2</span>
+        <span class="n">network_graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">weight</span><span class="o">=</span><span class="n">weight</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
@@ -466,7 +491,12 @@ to construct their inputs. These are connected through workflows rather than cod
 <span class="n">edges_direct</span> <span class="o">=</span> <span class="p">[(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span> <span class="ow">in</span> <span class="n">network_graph</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;weight&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
 <span class="n">edges_indirect</span> <span class="o">=</span> <span class="p">[(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span> <span class="ow">in</span> <span class="n">network_graph</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;weight&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">]</span>
 
-<span class="n">layout</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">nx_pydot</span><span class="o">.</span><span class="n">graphviz_layout</span><span class="p">(</span><span class="n">network_graph</span><span class="p">,</span> <span class="n">prog</span><span class="o">=</span><span class="s2">&quot;dot&quot;</span><span class="p">)</span>
+<span class="c1"># layout = nx.nx_pydot.graphviz_layout(network_graph, prog=&quot;neato&quot;)</span>
+<span class="n">layout</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">nx_agraph</span><span class="o">.</span><span class="n">graphviz_layout</span><span class="p">(</span>
+    <span class="n">network_graph</span><span class="p">,</span>
+    <span class="n">prog</span><span class="o">=</span><span class="s2">&quot;sfdp&quot;</span><span class="p">,</span>
+    <span class="c1"># args=&quot;-Gnormalize=true&quot;</span>
+<span class="p">)</span>
 
 <span class="c1"># nodes</span>
 <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_nodes</span><span class="p">(</span>
@@ -480,16 +510,19 @@ to construct their inputs. These are connected through workflows rather than cod
     <span class="n">network_graph</span><span class="p">,</span>
     <span class="n">layout</span><span class="p">,</span>
     <span class="n">edgelist</span><span class="o">=</span><span class="n">edges_direct</span><span class="p">,</span>
-    <span class="n">width</span><span class="o">=</span><span class="mi">3</span>
+    <span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="c1"># edge_color=&quot;b&quot;</span>
 <span class="p">)</span>
+
 <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_edges</span><span class="p">(</span>
     <span class="n">network_graph</span><span class="p">,</span>
     <span class="n">layout</span><span class="p">,</span>
     <span class="n">edgelist</span><span class="o">=</span><span class="n">edges_indirect</span><span class="p">,</span>
-    <span class="n">width</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
     <span class="c1"># alpha=0.5,</span>
     <span class="c1"># edge_color=&quot;b&quot;,</span>
     <span class="n">style</span><span class="o">=</span><span class="s2">&quot;:&quot;</span>
+    <span class="c1"># edge_color=&quot;r&quot;</span>
 <span class="p">)</span>
 
 <span class="c1"># node labels</span>
@@ -503,7 +536,7 @@ to construct their inputs. These are connected through workflows rather than cod
 <span class="p">)</span>
 <span class="c1"># edge weight labels</span>
 <span class="c1"># edge_labels = nx.get_edge_attributes(network_graph, &quot;weight&quot;)</span>
-<span class="c1"># nx.draw_networkx_edge_labels(network_graph, pos, edge_labels)</span>
+<span class="c1"># nx.draw_networkx_edge_labels(network_graph, layout, edge_labels)</span>
 
 <span class="c1"># Title/legend</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
@@ -516,16 +549,15 @@ to construct their inputs. These are connected through workflows rather than cod
     <span class="mf">0.80</span><span class="p">,</span>
     <span class="mf">0.10</span><span class="p">,</span>
     <span class="s2">&quot;------- Direct&quot;</span><span class="p">,</span>
-    <span class="n">horizontalalignment</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
+    <span class="n">horizontalalignment</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span>
     <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span>
     <span class="n">fontdict</span><span class="o">=</span><span class="n">font</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
     <span class="mf">0.80</span><span class="p">,</span>
     <span class="mf">0.06</span><span class="p">,</span>
-    <span class="c1"># &quot;------- Direct&quot;,</span>
-    <span class="s2">&quot;......... Indirect&quot;</span><span class="p">,</span>
-    <span class="n">horizontalalignment</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;........ Indirect&quot;</span><span class="p">,</span>
+    <span class="n">horizontalalignment</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span>
     <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span>
     <span class="n">fontdict</span><span class="o">=</span><span class="n">font</span><span class="p">,</span>
 <span class="p">)</span>
@@ -540,13 +572,30 @@ to construct their inputs. These are connected through workflows rather than cod
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/yp/vdv3q8mn4xj1_m277lk54s75tvdqcf/T/ipykernel_23660/1330741652.py:6: DeprecationWarning: nx.nx_pydot.graphviz_layout depends on the pydot package, which hasknown issues and is not actively maintained. Consider usingnx.nx_agraph.graphviz_layout instead.
+<img alt="../_images/0a76b998eb7322a7e491d458e5ca3911608078bb70f9328232eee032b345eb0c.png" src="../_images/0a76b998eb7322a7e491d458e5ca3911608078bb70f9328232eee032b345eb0c.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">squarify</span>
 
-See https://github.com/networkx/networkx/issues/5723
-  layout = nx.nx_pydot.graphviz_layout(network_graph, prog=&quot;dot&quot;)
+<span class="c1"># Count the number of projects depending on each project</span>
+<span class="n">depending</span> <span class="o">=</span> <span class="p">{</span><span class="n">model</span><span class="p">:</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">models</span><span class="p">}</span>
+<span class="k">for</span> <span class="n">model</span><span class="p">,</span> <span class="n">dependents</span> <span class="ow">in</span> <span class="n">model_connectivity</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">dependents</span><span class="p">:</span>
+        <span class="n">depending</span><span class="p">[</span><span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">depending</span><span class="p">[</span><span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">+</span> <span class="mi">1</span>
+
+<span class="n">non_zero</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span><span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">depending</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">}</span>
+<span class="n">squarify</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">non_zero</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="n">label</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">non_zero</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="../_images/81257461eb4bdc7408b81bcb32a049fc3d7dfd7a84970544d38a2155dcc763af.png" src="../_images/81257461eb4bdc7408b81bcb32a049fc3d7dfd7a84970544d38a2155dcc763af.png" />
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.0, 100.0, 0.0, 100.0)
+</pre></div>
+</div>
+<img alt="../_images/c863abdea59ef52d4820d892981a217ee6da50af66a019bc33a72f631efdfad3.png" src="../_images/c863abdea59ef52d4820d892981a217ee6da50af66a019bc33a72f631efdfad3.png" />
 </div>
 </div>
 </section>
