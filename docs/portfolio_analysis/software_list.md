@@ -32,6 +32,7 @@ These projects are actively supported and funded by WETO as of FY23.
 - AMR-Wind: https://github.com/exawind/amr-wind
 - Nalu-Wind: https://github.com/exawind/nalu-wind
 - OpenTurbine: https://github.com/exawind/openturbine
+- MMC-WRF: https://github.com/a2e-mmc/WRF
 - ERF: https://github.com/erf-model/ERF
 - WindSE: https://github.com/nrel/windse
 - pyNuMAD: https://github.com/sandialabs/pyNuMAD
@@ -125,6 +126,7 @@ These projects are either funded outside of WETO, are not actively funded, or ar
 - python-toolbox: https://github.com/openfast/python_toolbox
 - matlab-toolbox: https://github.com/openfast/matlab_toolbox
 - weio: https://github.com/ebranlard/weio
+- windtools: https://github.com/NREL/windtools
 
 **Deprecated or no longer supported**
 
