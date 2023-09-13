@@ -74,8 +74,6 @@ file_structure_stability: stable
 # WETO Integrations
 dependencies:
 - - amr-wind
-  - direct
-- - amr-wind
   - indirect
 
 # # Community Health
